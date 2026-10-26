@@ -1,0 +1,318 @@
+/* FinTrack Modern UI Stylesheet */
+
+.root {
+    -fx-font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #1e293b;
+}
+
+/* --- Sidebar Navigation --- */
+.sidebar {
+    -fx-background-color: #0f172a;
+    -fx-padding: 20 12 20 12;
+    -fx-pref-width: 230;
+    -fx-spacing: 8;
+}
+
+.brand-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.brand-subtitle {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 11px;
+    -fx-padding: 0 0 16 0;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 13px;
+    -fx-alignment: BASELINE_LEFT;
+    -fx-padding: 10 14 10 14;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-pref-width: 206;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #1e293b;
+    -fx-text-fill: #38bdf8;
+}
+
+.sidebar-button.active {
+    -fx-background-color: #0284c7;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.sidebar-user-card {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 10;
+    -fx-padding: 12;
+    -fx-spacing: 4;
+}
+
+.sidebar-user-name {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-user-email {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 11px;
+}
+
+/* --- Content Container --- */
+.content-area {
+    -fx-background-color: #f8fafc;
+    -fx-padding: 24;
+}
+
+.view-header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.view-subheader {
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748b;
+    -fx-padding: 0 0 16 0;
+}
+
+/* --- Cards --- */
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-padding: 18;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 8, 0, 0, 2);
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+}
+
+.kpi-title {
+    -fx-font-size: 12px;
+    -fx-text-fill: #64748b;
+    -fx-font-weight: bold;
+}
+
+.kpi-value {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.kpi-income {
+    -fx-text-fill: #16a34a;
+}
+
+.kpi-expense {
+    -fx-text-fill: #dc2626;
+}
+
+.kpi-balance {
+    -fx-text-fill: #0284c7;
+}
+
+.kpi-rate {
+    -fx-text-fill: #7c3aed;
+}
+
+/* --- Forms & Inputs --- */
+.text-field, .text-area, .combo-box, .date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 7 10 7 10;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused, .text-area:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #0284c7;
+    -fx-border-width: 1.5;
+}
+
+.form-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #334155;
+}
+
+.form-error-label {
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* --- Buttons --- */
+.btn-primary {
+    -fx-background-color: #0284c7;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #0369a1;
+}
+
+.btn-secondary {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #334155;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-font-size: 13px;
+    -fx-padding: 7 14 7 14;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #f1f5f9;
+}
+
+.btn-danger {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #dc2626;
+}
+
+.btn-success {
+    -fx-background-color: #10b981;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.btn-success:hover {
+    -fx-background-color: #059669;
+}
+
+/* --- TableView Modern Styling --- */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 8 10 8 10;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #475569;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.table-row-cell {
+    -fx-padding: 4 0 4 0;
+    -fx-border-color: #f1f5f9;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #ffffff;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #fbfcfe;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #e0f2fe;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: #0369a1;
+}
+
+/* --- Compliance Progress Bars --- */
+.progress-bar {
+    -fx-pref-height: 12px;
+    -fx-background-radius: 6;
+}
+
+.progress-bar .track {
+    -fx-background-color: #e2e8f0;
+    -fx-background-radius: 6;
+}
+
+.progress-bar-green .bar {
+    -fx-background-color: #10b981;
+    -fx-background-radius: 6;
+}
+
+.progress-bar-orange .bar {
+    -fx-background-color: #f59e0b;
+    -fx-background-radius: 6;
+}
+
+.progress-bar-red .bar {
+    -fx-background-color: #ef4444;
+    -fx-background-radius: 6;
+}
+
+/* --- Status Badges --- */
+.badge-ok {
+    -fx-background-color: #dcfce7;
+    -fx-text-fill: #15803d;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 8 3 8;
+    -fx-background-radius: 12;
+}
+
+.badge-warning {
+    -fx-background-color: #fef3c7;
+    -fx-text-fill: #b45309;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 8 3 8;
+    -fx-background-radius: 12;
+}
+
+.badge-exceeded {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #b91c1c;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 8 3 8;
+    -fx-background-radius: 12;
+}
+
+/* --- Hidden TabPane Header for Seamless Sidebar Navigation --- */
+.hidden-tabs .tab-header-area {
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+    -fx-padding: 0;
+    visibility: hidden;
+}

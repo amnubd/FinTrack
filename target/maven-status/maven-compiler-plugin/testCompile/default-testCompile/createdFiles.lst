@@ -1,0 +1,8 @@
+com\fintrack\model\ModelValidationTest.class
+com\fintrack\service\BudgetManagerMockitoTest.class
+com\fintrack\service\BudgetManagerTest.class
+com\fintrack\StandaloneVerification.class
+com\fintrack\model\TransactionValidationTest.class
+com\fintrack\service\AnalyticsProcessorTest.class
+com\fintrack\storage\SQLiteStorageEngineTest.class
+com\fintrack\storage\CsvStorageEngineTest.class

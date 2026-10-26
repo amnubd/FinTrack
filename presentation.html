@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FinTrack — Automated Personal Financial Management Infrastructure (Presentation)</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- PptxGenJS for instant client-side PPTX generation -->
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+  <style>
+    @media screen {
+      .slide { display: none; }
+      .slide.active { display: flex; }
+    }
+    @media print {
+      body { background-color: #0f172a !important; color: #f8fafc !important; }
+      header, .no-print { display: none !important; }
+      .slide {
+        display: flex !important;
+        page-break-after: always;
+        height: 100vh;
+        width: 100vw;
+        max-width: 100% !important;
+        padding: 3rem !important;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .badge { display: inline-block; padding: 0.25rem 0.65rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans select-none overflow-x-hidden">
+
+  <!-- Top Navigation & Action Controls -->
+  <header class="w-full bg-slate-900/90 backdrop-blur border-b border-slate-800 px-6 py-3 flex items-center justify-between z-20 sticky top-0 no-print">
+    <div class="flex items-center space-x-3">
+      <span class="text-teal-400 font-extrabold text-xl tracking-tight">FinTrack</span>
+      <span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700">Presentation Deck</span>
+    </div>
+
+    <div class="flex items-center space-x-3">
+      <span id="slideCounter" class="text-xs font-mono text-slate-400 mr-2">Slide 1 / 12</span>
+      <button onclick="prevSlide()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded border border-slate-700 transition">◀ Prev</button>
+      <button onclick="nextSlide()" class="px-3 py-1 bg-teal-600 hover:bg-teal-500 text-white font-medium text-xs rounded transition shadow-sm">Next ▶</button>
+      <button onclick="toggleNotes()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs rounded border border-slate-700 transition" title="Toggle Speaker Notes">📝 Notes</button>
+      
+      <div class="h-4 w-px bg-slate-700 mx-1"></div>
+
+      <!-- PPTX DOWNLOAD BUTTON -->
+      <button id="btnDownloadPPTX" onclick="exportToPPTX()" class="px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs rounded-lg transition shadow-md flex items-center space-x-1.5 cursor-pointer">
+        <span>📥</span>
+        <span>Download .PPTX</span>
+      </button>
+
+      <button onclick="window.print()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg border border-slate-700 transition flex items-center space-x-1" title="Print to PDF">
+        <span>🖨️</span>
+        <span>PDF</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="w-full bg-slate-800 h-1 no-print">
+    <div id="progressBar" class="bg-teal-500 h-1 transition-all duration-300" style="width: 8.33%;"></div>
+  </div>
+
+  <!-- Slides Viewport -->
+  <main class="flex-1 relative flex items-center justify-center p-6 md:p-12 overflow-y-auto">
+
+    <!-- SLIDE 1: Title Slide -->
+    <section class="slide active flex-col justify-center items-center text-center max-w-4xl w-full">
+      <div class="inline-flex items-center space-x-2 bg-teal-500/10 border border-teal-500/30 text-teal-300 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-6">
+        <span>Project Defense &bull; Technical Overview</span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 leading-tight">
+        FinTrack: Automated Personal Financial Management Infrastructure
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mb-8 leading-relaxed">
+        An enterprise-grade, offline-first personal financial management platform with real-time category run-rates, predictive balance forecasting, and visual compliance meters.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-2 mb-10">
+        <span class="badge bg-slate-800 text-teal-400 border border-slate-700">Java JDK 25 LTS</span>
+        <span class="badge bg-slate-800 text-sky-400 border border-slate-700">JavaFX 17 FXML</span>
+        <span class="badge bg-slate-800 text-emerald-400 border border-slate-700">SQLite JDBC (ACID)</span>
+        <span class="badge bg-slate-800 text-amber-400 border border-slate-700">MVC Architecture</span>
+        <span class="badge bg-slate-800 text-purple-400 border border-slate-700">Maven Build</span>
+        <span class="badge bg-slate-800 text-rose-400 border border-slate-700">JUnit 5 &amp; Mockito</span>
+      </div>
+
+      <p class="text-xs text-slate-500 no-print">Use <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">Space</kbd> or <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">→</kbd> to advance slides &bull; Click <strong class="text-teal-400">Download .PPTX</strong> above for offline PowerPoint presentation</p>
+    </section>
+
+    <!-- SLIDE 2: Problem Statement -->
+    <section class="slide flex-col max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">01 / Motivation &amp; Context</div>
+      <h2 class="text-3xl font-bold text-white mb-6">The Personal Finance Dilemma</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl">
+          <div class="text-rose-400 text-2xl mb-3">⚠️</div>
+          <h3 class="text-lg font-semibold text-white mb-2">Spreadsheet Fatigue</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Manual spreadsheets lack relational integrity, have zero automated validation, require cumbersome maintenance, and break under scale.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl">
+          <div class="text-amber-400 text-2xl mb-3">🔒</div>
+          <h3 class="text-lg font-semibold text-white mb-2">Privacy &amp; Cloud Lock-In</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Commercial SaaS applications harvest private banking metadata, monetize personal profiles, suffer downtime, and lock data behind paywalls.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl">
+          <div class="text-sky-400 text-2xl mb-3">📉</div>
+          <h3 class="text-lg font-semibold text-white mb-2">Absence of Foresight</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Standard tools are purely retrospective. They show historical outflows but fail to model month-end category run-rates or 3-month liquidity projections.</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-4 flex items-center space-x-4">
+        <span class="text-teal-400 font-bold text-sm">FinTrack Goal:</span>
+        <span class="text-sm text-slate-300">Deliver an offline-first desktop platform that executes enterprise financial analytics, automated compliance guardrails, and deterministic forecasts locally.</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Proposed Solution -->
+    <section class="slide flex-col max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">02 / Solution Architecture</div>
+      <h2 class="text-3xl font-bold text-white mb-6">FinTrack Core Value Pillars</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl flex items-start space-x-4">
+          <div class="bg-teal-500/20 text-teal-400 p-2.5 rounded-lg text-lg font-bold">1</div>
+          <div>
+            <h3 class="font-bold text-white text-base mb-1">Unified Data Ingestion</h3>
+            <p class="text-xs text-slate-400">Strict form validation guarding positive bounds (&gt; 0), non-null checks, ISO date pickers, and automated flow-direction assignments.</p>
+          </div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl flex items-start space-x-4">
+          <div class="bg-sky-500/20 text-sky-400 p-2.5 rounded-lg text-lg font-bold">2</div>
+          <div>
+            <h3 class="font-bold text-white text-base mb-1">Dual Persistence Engine</h3>
+            <p class="text-xs text-slate-400">Pluggable <code class="text-sky-300">StorageEngine</code> contract: Relational ACID SQLite JDBC + Flat-file CSV engine with full bidirectional interchange.</p>
+          </div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl flex items-start space-x-4">
+          <div class="bg-purple-500/20 text-purple-400 p-2.5 rounded-lg text-lg font-bold">3</div>
+          <div>
+            <h3 class="font-bold text-white text-base mb-1">Real-Time Threshold Compliance</h3>
+            <p class="text-xs text-slate-400">Dynamic visual meters color-coded for instant compliance recognition: Safe (&lt;75%), Warning (75-100%), and Exceeded (&gt;100%).</p>
+          </div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl flex items-start space-x-4">
+          <div class="bg-emerald-500/20 text-emerald-400 p-2.5 rounded-lg text-lg font-bold">4</div>
+          <div>
+            <h3 class="font-bold text-white text-base mb-1">Predictive Analytics Engine</h3>
+            <p class="text-xs text-slate-400">Computational models generating daily/weekly spend velocity, category run-rates, 3-month balance forecasts, and health indices.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: MVC Architecture -->
+    <section class="slide flex-col max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">03 / Software Engineering</div>
+      <h2 class="text-3xl font-bold text-white mb-6">Model-View-Controller (MVC) Pattern</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <h3 class="text-sm font-bold text-sky-400 uppercase tracking-wide mb-2">View (Presentation)</h3>
+          <ul class="text-xs text-slate-400 space-y-2 list-disc list-inside">
+            <li>Declarative <code class="text-slate-300">MainView.fxml</code></li>
+            <li>Custom CSS theme <code class="text-slate-300">styles.css</code></li>
+            <li>JavaFX controls &amp; Charts</li>
+            <li><strong class="text-slate-300">Zero database calls</strong> in UI</li>
+          </ul>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <h3 class="text-sm font-bold text-teal-400 uppercase tracking-wide mb-2">Controller (Mediation)</h3>
+          <ul class="text-xs text-slate-400 space-y-2 list-disc list-inside">
+            <li><code class="text-slate-300">MainController</code></li>
+            <li>Input validation &amp; alerts</li>
+            <li><code class="text-slate-300">FilteredList</code> &amp; <code class="text-slate-300">SortedList</code></li>
+            <li>Reactive property binding</li>
+          </ul>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <h3 class="text-sm font-bold text-purple-400 uppercase tracking-wide mb-2">Model &amp; Service</h3>
+          <ul class="text-xs text-slate-400 space-y-2 list-disc list-inside">
+            <li>Entities: <code class="text-slate-300">User</code>, <code class="text-slate-300">Transaction</code></li>
+            <li><code class="text-slate-300">BudgetManager</code> service</li>
+            <li><code class="text-slate-300">AnalyticsProcessor</code></li>
+            <li><code class="text-slate-300">StorageEngine</code> contract</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-teal-500/30 p-4 rounded-xl text-xs text-slate-300 flex items-center justify-between">
+        <span>✨ <strong>Dependency Inversion Principle (DIP):</strong> High-level business logic depends on the <code class="text-teal-400">StorageEngine</code> interface, enabling seamless switching between SQLite and CSV persistence.</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Relational SQLite Schema -->
+    <section class="slide flex-col max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">04 / Persistence Design</div>
+      <h2 class="text-3xl font-bold text-white mb-6">Relational SQLite Schema (ACID)</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-sky-400 font-bold mb-2">TABLE users</div>
+          <div class="text-slate-400 leading-relaxed">
+            id TEXT PRIMARY KEY<br/>
+            name TEXT NOT NULL<br/>
+            email TEXT UNIQUE NOT NULL<br/>
+            currency TEXT DEFAULT 'INR'<br/>
+            monthly_income NUMERIC CHECK (>= 0)<br/>
+            global_budget NUMERIC CHECK (>= 0)<br/>
+            savings_goal NUMERIC CHECK (>= 0)
+          </div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-teal-400 font-bold mb-2">TABLE transactions</div>
+          <div class="text-slate-400 leading-relaxed">
+            id TEXT PRIMARY KEY<br/>
+            user_id TEXT REFERENCES users(id) ON DELETE CASCADE<br/>
+            timestamp TEXT NOT NULL (ISO-8601)<br/>
+            category TEXT NOT NULL<br/>
+            amount NUMERIC CHECK (amount > 0)<br/>
+            payment_mode TEXT NOT NULL<br/>
+            type TEXT CHECK (type IN ('INCOME','EXPENSE'))
+          </div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-amber-400 font-bold mb-2">TABLE budgets</div>
+          <div class="text-slate-400 leading-relaxed">
+            id TEXT PRIMARY KEY<br/>
+            user_id TEXT REFERENCES users(id) ON DELETE CASCADE<br/>
+            category TEXT NOT NULL<br/>
+            monthly_limit NUMERIC CHECK (> 0)<br/>
+            month INTEGER CHECK (1..12), year INTEGER<br/>
+            UNIQUE (user_id, category, month, year)
+          </div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-purple-400 font-bold mb-2">TABLE goals</div>
+          <div class="text-slate-400 leading-relaxed">
+            id TEXT PRIMARY KEY<br/>
+            user_id TEXT REFERENCES users(id) ON DELETE CASCADE<br/>
+            name TEXT NOT NULL<br/>
+            target_amount NUMERIC CHECK (> 0)<br/>
+            current_amount NUMERIC CHECK (>= 0)<br/>
+            target_date TEXT NOT NULL
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Computational Analytics Engine -->
+    <section class="slide flex-col max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">05 / Computational Output</div>
+      <h2 class="text-3xl font-bold text-white mb-6">Analytical Formulations</h2>
+
+      <div class="space-y-4 text-sm">
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="font-bold text-white mb-1">1. Transaction Velocity</div>
+          <p class="text-xs text-slate-400 mb-2">Measures expenditure burn frequency across moving windows (W = 7, 14, 30, 60 days):</p>
+          <div class="bg-slate-950 p-2.5 rounded font-mono text-xs text-teal-400">
+            Daily_Spend = Total_Expense / W &nbsp;|&nbsp; Weekly_Spend = Daily_Spend × 7
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="font-bold text-white mb-1">2. Category Monthly Run-Rate</div>
+          <p class="text-xs text-slate-400 mb-2">Extrapolates month-end category expenditure based on days elapsed (D_elapsed of D_total):</p>
+          <div class="bg-slate-950 p-2.5 rounded font-mono text-xs text-sky-400">
+            Projected_Spend = (Current_Spend / D_elapsed) × D_total
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="font-bold text-white mb-1">3. Month-over-Month (MoM) Variance</div>
+          <div class="bg-slate-950 p-2.5 rounded font-mono text-xs text-purple-400">
+            MoM_Change_Pct = ((Projected_Spend - Previous_Month_Spend) / Previous_Month_Spend) × 100
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Balance Forecasting & Health Diagnostic -->
+    <section class="slide flex-col max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">06 / Intelligence Pipelines</div>
+      <h2 class="text-3xl font-bold text-white mb-6">Balance Forecasting &amp; Health Scoring</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <h3 class="text-base font-bold text-white mb-2">Linear Balance Projection</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-3">Projects rest-of-month liquidity using current daily net run-rates, plus sequential 3-month forward balances:</p>
+          <div class="bg-slate-950 p-3 rounded font-mono text-xs text-emerald-400 leading-relaxed">
+            Month_End_Bal = Current_Bal + (Daily_Net × Days_Remaining)<br/>
+            Forward_Bal(M+1) = Month_End_Bal + (Income_Est - Expense_Est)
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <h3 class="text-base font-bold text-white mb-2">Composite Financial Health (0-100)</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-3">Multi-criteria weighted index grading financial stability:</p>
+          <ul class="text-xs space-y-1.5 text-slate-300">
+            <li>• <strong class="text-teal-400">40% Weight:</strong> Category budget adherence ratio</li>
+            <li>• <strong class="text-sky-400">30% Weight:</strong> Global macro budget ceiling guard</li>
+            <li>• <strong class="text-purple-400">30% Weight:</strong> Savings rate benchmark (&ge; 20% savings)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-around bg-slate-900 border border-slate-800 p-3 rounded-xl text-center text-xs">
+        <div><span class="text-emerald-400 font-bold block text-sm">&ge; 85</span>EXCELLENT</div>
+        <div><span class="text-sky-400 font-bold block text-sm">70 – 84</span>HEALTHY</div>
+        <div><span class="text-amber-400 font-bold block text-sm">50 – 69</span>MODERATE</div>
+        <div><span class="text-rose-400 font-bold block text-sm">&lt; 50</span>CRITICAL</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Graphical User Interface Walkthrough -->
+    <section class="slide flex-col max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">07 / Presentation &amp; UX</div>
+      <h2 class="text-3xl font-bold text-white mb-6">7 Unified Workspaces</h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg">
+          <div class="text-teal-400 font-bold text-sm mb-1">1. Dashboard</div>
+          <p class="text-slate-400">4 KPI Cards, Category PieChart, Monthly BarChart, Ledger preview.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg">
+          <div class="text-teal-400 font-bold text-sm mb-1">2. Add Tx Form</div>
+          <p class="text-slate-400">DatePicker, Category dropdown, Amount, Mode, inline validation.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg">
+          <div class="text-teal-400 font-bold text-sm mb-1">3. Ledger Table</div>
+          <p class="text-slate-400">Live multi-filter search, TableView, edit memo, delete prompt.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg">
+          <div class="text-teal-400 font-bold text-sm mb-1">4. Budgets</div>
+          <p class="text-slate-400">Category limits with Green/Amber/Red compliance meters.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg">
+          <div class="text-teal-400 font-bold text-sm mb-1">5. Milestone Goals</div>
+          <p class="text-slate-400">Target amounts, deadlines, and incremental contribution bars.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg">
+          <div class="text-teal-400 font-bold text-sm mb-1">6. Reports</div>
+          <p class="text-slate-400">Velocity meters, 3-Mo Forecast, Health score, CSV export.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg">
+          <div class="text-teal-400 font-bold text-sm mb-1">7. Profile</div>
+          <p class="text-slate-400">User demographic ceilings, currency switch, backup/restore.</p>
+        </div>
+        <div class="bg-slate-900 border border-teal-500/30 p-3.5 rounded-lg bg-teal-500/5">
+          <div class="text-teal-300 font-bold text-sm mb-1">Styling</div>
+          <p class="text-slate-400">Modular CSS (<code class="text-teal-300">styles.css</code>) with hidden TabPane header.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: Testing & Quality Assurance -->
+    <section class="slide flex-col max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">08 / Verification</div>
+      <h2 class="text-3xl font-bold text-white mb-6">Rigorous Multi-Tier Testing</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <div class="text-emerald-400 font-bold text-sm mb-2">Model Invariant Tests</div>
+          <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
+            <li>Rejection of 0.00 and negative amounts</li>
+            <li>Non-null field checks</li>
+            <li>Note sanitization (null &rarr; <code class="text-slate-300">""</code>)</li>
+            <li>Regex email syntax validation</li>
+          </ul>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <div class="text-sky-400 font-bold text-sm mb-2">Isolated Mockito Tests</div>
+          <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
+            <li>Mocked <code class="text-slate-300">StorageEngine</code></li>
+            <li>Threshold validation (&lt;75% OK, 75-100% WARNING, &gt;100% EXCEEDED)</li>
+            <li>In-place budget updates</li>
+          </ul>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <div class="text-purple-400 font-bold text-sm mb-2">In-Memory SQLite Tests</div>
+          <ul class="text-xs text-slate-400 space-y-1.5 list-disc list-inside">
+            <li><code class="text-slate-300">jdbc:sqlite::memory:</code></li>
+            <li>Foreign key cascade deletions</li>
+            <li>CSV export &amp; import cycle</li>
+            <li>Zero disk contamination</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 text-center font-mono text-xs text-teal-400">
+        mvn test &nbsp;|&nbsp; 100% Test Suite Pass Rate across Invariants, Budgets &amp; Forecasts
+      </div>
+    </section>
+
+    <!-- SLIDE 10: Realistic Indian Rupee (INR) Dataset -->
+    <section class="slide flex-col max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">09 / Demonstration Data</div>
+      <h2 class="text-3xl font-bold text-white mb-6">Built-in INR (₹) Seed Data Engine</h2>
+
+      <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl mb-6">
+        <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+          <div>
+            <div class="text-base font-bold text-white">Profile: Amnubd</div>
+            <div class="text-xs text-slate-400">amnubd@fintrack.in &bull; Base Currency: INR (₹)</div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-teal-400 font-bold">Monthly Income: ₹85,000</span>
+            <span class="text-xs text-slate-400 block">Global Budget: ₹55,000</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+          <div>
+            <span class="text-slate-400 block">Salary &amp; Consulting</span>
+            <span class="font-bold text-emerald-400">₹85,000 + ₹15,000</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block">Apartment Rent</span>
+            <span class="font-bold text-rose-400">₹22,500 / month</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block">Groceries (Zepto/Baskets)</span>
+            <span class="font-bold text-rose-400">~₹13,500 / month</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block">Emergency Reserve</span>
+            <span class="font-bold text-sky-400">₹1,85,000 / ₹3,00,000</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-400 text-center">Automatically checks database state on startup &amp; populates 3 full quarters if running on a fresh deployment.</p>
+    </section>
+
+    <!-- SLIDE 11: Future Scope & Roadmap -->
+    <section class="slide flex-col max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">10 / Horizon &amp; Roadmap</div>
+      <h2 class="text-3xl font-bold text-white mb-6">Future Enhancements</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <div class="text-teal-400 font-bold text-base mb-1">🤖 On-Device AI Categorization</div>
+          <p class="text-xs text-slate-400 leading-relaxed">Integration of lightweight local transformer models or vector embeddings to parse raw banking SMS messages and statements without cloud leakage.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <div class="text-sky-400 font-bold text-base mb-1">📄 Automated Bank Statement Ingestion</div>
+          <p class="text-xs text-slate-400 leading-relaxed">Parser pipelines for PDF bank statements, OFX, and QIF standards to eliminate manual entry altogether.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <div class="text-purple-400 font-bold text-base mb-1">💱 Live Forex Rate Synchronization</div>
+          <p class="text-xs text-slate-400 leading-relaxed">Multi-currency automated reconciliation converting foreign transactions into user baseline currency in real-time.</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+          <div class="text-emerald-400 font-bold text-base mb-1">📱 Mobile Companion (JavaFX Mobile)</div>
+          <p class="text-xs text-slate-400 leading-relaxed">Cross-compilation using Gluon Mobile GraalVM Native Image for offline Android and iOS receipt capturing.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: Conclusion & Q&A -->
+    <section class="slide flex-col justify-center items-center text-center max-w-4xl w-full">
+      <div class="text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">Conclusion</div>
+      <h2 class="text-4xl font-extrabold text-white mb-4">Summary of Deliverables</h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl w-full mb-8 text-left text-xs">
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-teal-400 font-bold text-base">Full MVC</div>
+          <div class="text-slate-400 mt-1">Strict separation with zero DB leakage into views.</div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-sky-400 font-bold text-base">Dual Storage</div>
+          <div class="text-slate-400 mt-1">SQLite ACID + CSV backup with OpenCSV.</div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-purple-400 font-bold text-base">Predictive</div>
+          <div class="text-slate-400 mt-1">Velocity, run-rates &amp; 3-month balance forecast.</div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-emerald-400 font-bold text-base">100% Tested</div>
+          <div class="text-slate-400 mt-1">JUnit 5, Mockito &amp; In-memory integration suite.</div>
+        </div>
+      </div>
+
+      <div class="bg-teal-500/10 border border-teal-500/30 text-teal-300 px-6 py-3 rounded-full text-sm font-semibold mb-6">
+        Ready for College Evaluation &amp; Demonstration
+      </div>
+
+      <p class="text-slate-400 text-sm">Thank You &bull; Questions &amp; Discussion</p>
+    </section>
+
+  </main>
+
+  <!-- Speaker Notes Drawer (Collapsible) -->
+  <footer id="notesPanel" class="hidden bg-slate-900 border-t border-slate-800 px-6 py-4 text-xs text-slate-300 no-print">
+    <div class="max-w-4xl mx-auto flex items-start space-x-3">
+      <span class="text-teal-400 font-bold uppercase tracking-wider">Speaker Notes:</span>
+      <p id="notesContent" class="leading-relaxed text-slate-400">Introduce project title, candidate credentials, and technology stack choices.</p>
+    </div>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+    const notesContent = document.getElementById('notesContent');
+    const notesPanel = document.getElementById('notesPanel');
+
+    const speakerNotes = [
+      "Introduce project title, candidate credentials, and the foundational technology stack choices (Java 25 LTS, JavaFX, SQLite JDBC, and Maven).",
+      "Explain the problem: spreadsheets are manual and break; cloud apps harvest private banking data; existing tools lack predictive foresight.",
+      "Summarize the solution: Ingestion engine, dual storage abstraction, dynamic visual compliance bars, and analytical forecasting.",
+      "Explain MVC: Views in FXML/CSS, controllers as mediators, services for financial math, and the Dependency Inversion Principle.",
+      "Walk through SQLite relational modeling: foreign keys with ON DELETE CASCADE, check constraints (amount > 0), and index optimizations.",
+      "Explain mathematical formulations: Velocity moving averages, linear category run-rates, and month-over-month variance.",
+      "Highlight balance forecasting: Linear rest-of-month pacing and forward 3-month liquidity projections. Explain 40/30/30 health index.",
+      "Tour the 7 workspaces: Dashboard KPIs, Ingestion form, Ledger with search, Budgets with green/orange/red meters, Goals, Reports, Profile.",
+      "Discuss testing: Parameterized model invariant tests, Mockito isolated mocks, and in-memory SQLite integration tests.",
+      "Explain the realistic Indian Rupee seed data: Amnubd profile with ₹85,000 salary, ₹22,500 rent, and Zepto/bistro outflows.",
+      "Outline future enhancements: on-device AI categorization, statement PDF parsers, live forex, and mobile companion app.",
+      "Wrap up: Summarize deliverables, highlight clean code architecture, and invite questions from the examination panel."
+    ];
+
+    let current = 0;
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === current);
+      });
+      counter.textContent = `Slide ${current + 1} / ${slides.length}`;
+      progressBar.style.width = `${((current + 1) / slides.length) * 100}%`;
+      notesContent.textContent = speakerNotes[current] || "";
+    }
+
+    function nextSlide() {
+      if (current < slides.length - 1) {
+        current++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (current > 0) {
+        current--;
+        updateSlide();
+      }
+    }
+
+    function toggleNotes() {
+      notesPanel.classList.toggle('hidden');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key.toLowerCase() === 'n') {
+        toggleNotes();
+      } else if (e.key.toLowerCase() === 'p') {
+        exportToPPTX();
+      }
+    });
+
+    updateSlide();
+
+    // =========================================================================
+    // NATIVE PPTX EXPORT ENGINE (PptxGenJS)
+    // =========================================================================
+    function exportToPPTX() {
+      const btn = document.getElementById('btnDownloadPPTX');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span>⏳</span><span>Generating PPTX...</span>';
+      btn.disabled = true;
+
+      try {
+        if (typeof PptxGenJS === 'undefined') {
+          alert('PptxGenJS library is still loading or requires internet connection. You can also print as PDF using the PDF button.');
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+          return;
+        }
+
+        let pptx = new PptxGenJS();
+        pptx.layout = 'LAYOUT_16x9';
+        pptx.author = 'FinTrack Engineering';
+        pptx.company = 'FinTrack Core';
+        pptx.title = 'FinTrack - Personal Financial Infrastructure';
+
+        const BG_COLOR = '0F172A';
+        const CARD_BG = '1E293B';
+        const TEAL = '2DD4BF';
+        const SKY = '38BDF8';
+        const WHITE = 'FFFFFF';
+        const MUTED = '94A3B8';
+        const ROSE = 'FB7185';
+        const AMBER = 'FBBF24';
+        const EMERALD = '34D399';
+
+        // SLIDE 1: Title
+        let s1 = pptx.addSlide();
+        s1.background = { color: BG_COLOR };
+        s1.addText('FINAL YEAR PROJECT DEFENSE', { x: 1.0, y: 1.2, w: 11.3, h: 0.4, fontSize: 13, color: TEAL, bold: true, align: 'center' });
+        s1.addText('FinTrack: Automated Personal Financial\nManagement Infrastructure', {
+          x: 1.0, y: 1.8, w: 11.3, h: 1.8, fontSize: 32, color: WHITE, bold: true, align: 'center'
+        });
+        s1.addText('An enterprise-grade, offline-first personal financial platform with real-time category run-rates, predictive balance forecasting, and visual compliance meters.', {
+          x: 1.5, y: 3.8, w: 10.3, h: 1.0, fontSize: 16, color: MUTED, align: 'center'
+        });
+        s1.addText('Java 25 LTS  |  JavaFX 17  |  SQLite (ACID)  |  MVC Architecture  |  Maven  |  JUnit 5', {
+          x: 1.0, y: 5.6, w: 11.3, h: 0.5, fontSize: 14, color: SKY, bold: true, align: 'center'
+        });
+        s1.addNotes(speakerNotes[0]);
+
+        // Helper for slide headers
+        function addSlideHeader(slide, category, title) {
+          slide.background = { color: BG_COLOR };
+          slide.addText(category.toUpperCase(), { x: 0.8, y: 0.4, w: 10, h: 0.3, fontSize: 11, color: TEAL, bold: true });
+          slide.addText(title, { x: 0.8, y: 0.7, w: 11.5, h: 0.6, fontSize: 22, color: WHITE, bold: true });
+        }
+
+        // SLIDE 2: Problem
+        let s2 = pptx.addSlide();
+        addSlideHeader(s2, '01 / Motivation & Context', 'The Personal Finance Dilemma');
+        
+        s2.addShape(pptx.ShapeType.rect, { x: 0.8, y: 1.6, w: 3.6, h: 3.8, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s2.addText('⚠️ Spreadsheet Fatigue', { x: 1.0, y: 1.9, w: 3.2, h: 0.5, fontSize: 16, color: ROSE, bold: true });
+        s2.addText('• Manual logging is error-prone\n• Lacks relational integrity & keys\n• Zero automated validation\n• Difficult to maintain over time', { x: 1.0, y: 2.6, w: 3.2, h: 2.4, fontSize: 13, color: MUTED });
+
+        s2.addShape(pptx.ShapeType.rect, { x: 4.8, y: 1.6, w: 3.6, h: 3.8, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s2.addText('🔒 Privacy & Cloud Lock-In', { x: 5.0, y: 1.9, w: 3.2, h: 0.5, fontSize: 16, color: AMBER, bold: true });
+        s2.addText('• Commercial apps harvest data\n• Cloud outages & subscription fees\n• Banking credentials risk\n• Zero user ownership of logs', { x: 5.0, y: 2.6, w: 3.2, h: 2.4, fontSize: 13, color: MUTED });
+
+        s2.addShape(pptx.ShapeType.rect, { x: 8.8, y: 1.6, w: 3.6, h: 3.8, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s2.addText('📉 Absence of Foresight', { x: 9.0, y: 1.9, w: 3.2, h: 0.5, fontSize: 16, color: SKY, bold: true });
+        s2.addText('• Existing tools are purely backward\n• No burn rate velocity meters\n• No multi-month cash projections\n• Financial surprises go unflagged', { x: 9.0, y: 2.6, w: 3.2, h: 2.4, fontSize: 13, color: MUTED });
+
+        s2.addShape(pptx.ShapeType.rect, { x: 0.8, y: 5.8, w: 11.6, h: 0.9, fill: { color: '132A3E' }, line: { color: SKY } });
+        s2.addText('FinTrack Objective: A 100% offline-first desktop platform executing enterprise financial analytics, automated compliance guardrails, and deterministic forecasts locally.', { x: 1.0, y: 5.9, w: 11.2, h: 0.7, fontSize: 12, color: WHITE, bold: true });
+        s2.addNotes(speakerNotes[1]);
+
+        // SLIDE 3: Solution Pillars
+        let s3 = pptx.addSlide();
+        addSlideHeader(s3, '02 / Solution Architecture', 'FinTrack Core Value Pillars');
+
+        const pillars = [
+          { num: '1', title: 'Unified Data Ingestion', desc: 'Strict form validation guarding positive bounds (>0), non-null checks, ISO date pickers, and automated flow-direction assignments.' },
+          { num: '2', title: 'Dual Persistence Engine', desc: 'Pluggable StorageEngine contract: Relational ACID SQLite JDBC + Flat-file CSV engine with full bidirectional interchange.' },
+          { num: '3', title: 'Threshold Compliance', desc: 'Dynamic visual meters color-coded for instant compliance recognition: Safe (<75%), Warning (75-100%), and Exceeded (>100%).' },
+          { num: '4', title: 'Predictive Analytics Engine', desc: 'Computational models generating daily/weekly spend velocity, category run-rates, 3-month balance forecasts, and health indices.' }
+        ];
+
+        pillars.forEach((p, idx) => {
+          let x = (idx % 2 === 0) ? 0.8 : 6.8;
+          let y = (idx < 2) ? 1.6 : 4.3;
+          s3.addShape(pptx.ShapeType.rect, { x: x, y: y, w: 5.6, h: 2.3, fill: { color: CARD_BG }, line: { color: '334155' } });
+          s3.addText(`[${p.num}] ${p.title}`, { x: x + 0.3, y: y + 0.3, w: 5.0, h: 0.4, fontSize: 15, color: TEAL, bold: true });
+          s3.addText(p.desc, { x: x + 0.3, y: y + 0.8, w: 5.0, h: 1.3, fontSize: 12, color: MUTED });
+        });
+        s3.addNotes(speakerNotes[2]);
+
+        // SLIDE 4: MVC
+        let s4 = pptx.addSlide();
+        addSlideHeader(s4, '03 / Software Engineering', 'Model-View-Controller (MVC) Pattern');
+
+        s4.addShape(pptx.ShapeType.rect, { x: 0.8, y: 1.6, w: 3.6, h: 4.2, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s4.addText('VIEW (Presentation)', { x: 1.0, y: 1.9, w: 3.2, h: 0.4, fontSize: 15, color: SKY, bold: true });
+        s4.addText('• MainView.fxml (declarative)\n• styles.css modern skin\n• JavaFX TabPane & Charts\n• TableViews with formatters\n• Zero direct DB access in view', { x: 1.0, y: 2.5, w: 3.2, h: 3.0, fontSize: 13, color: MUTED });
+
+        s4.addShape(pptx.ShapeType.rect, { x: 4.8, y: 1.6, w: 3.6, h: 4.2, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s4.addText('CONTROLLER (Mediation)', { x: 5.0, y: 1.9, w: 3.2, h: 0.4, fontSize: 15, color: TEAL, bold: true });
+        s4.addText('• MainController coordinator\n• Form validation & error labels\n• FilteredList live search\n• ObservableList data binding\n• Asynchronous modal dialogs', { x: 5.0, y: 2.5, w: 3.2, h: 3.0, fontSize: 13, color: MUTED });
+
+        s4.addShape(pptx.ShapeType.rect, { x: 8.8, y: 1.6, w: 3.6, h: 4.2, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s4.addText('MODEL & SERVICE', { x: 9.0, y: 1.9, w: 3.2, h: 0.4, fontSize: 15, color: 'C084FC', bold: true });
+        s4.addText('• Domain: User, Transaction, Goal\n• BudgetManager service\n• AnalyticsProcessor pipeline\n• StorageEngine abstraction\n• SQLite + CSV implementations', { x: 9.0, y: 2.5, w: 3.2, h: 3.0, fontSize: 13, color: MUTED });
+
+        s4.addShape(pptx.ShapeType.rect, { x: 0.8, y: 6.1, w: 11.6, h: 0.7, fill: { color: '0A2540' }, line: { color: TEAL } });
+        s4.addText('Dependency Inversion: Services depend strictly on StorageEngine interface, making storage drivers completely interchangeable.', { x: 1.0, y: 6.2, w: 11.2, h: 0.5, fontSize: 12, color: WHITE });
+        s4.addNotes(speakerNotes[3]);
+
+        // SLIDE 5: Schema
+        let s5 = pptx.addSlide();
+        addSlideHeader(s5, '04 / Persistence Design', 'Relational SQLite Schema (ACID)');
+
+        const tables = [
+          { name: 'TABLE: users', color: SKY, sql: 'id TEXT PRIMARY KEY\nname TEXT NOT NULL\nemail TEXT UNIQUE NOT NULL\ncurrency TEXT DEFAULT "INR"\nmonthly_income NUMERIC (>=0)\nglobal_budget NUMERIC (>=0)\nsavings_goal NUMERIC (>=0)' },
+          { name: 'TABLE: transactions', color: TEAL, sql: 'id TEXT PRIMARY KEY\nuser_id TEXT REFERENCES users(id)\ntimestamp TEXT NOT NULL\ncategory TEXT NOT NULL\namount NUMERIC (> 0)\npayment_mode TEXT NOT NULL\ntype TEXT (INCOME / EXPENSE)' },
+          { name: 'TABLE: budgets', color: AMBER, sql: 'id TEXT PRIMARY KEY\nuser_id TEXT REFERENCES users(id)\ncategory TEXT NOT NULL\nmonthly_limit NUMERIC (> 0)\nmonth INT (1..12), year INT\nUNIQUE(user_id, category, month, yr)' },
+          { name: 'TABLE: goals', color: 'C084FC', sql: 'id TEXT PRIMARY KEY\nuser_id TEXT REFERENCES users(id)\nname TEXT NOT NULL\ntarget_amount NUMERIC (> 0)\ncurrent_amount NUMERIC (>= 0)\ntarget_date TEXT NOT NULL' }
+        ];
+
+        tables.forEach((t, idx) => {
+          let x = (idx % 2 === 0) ? 0.8 : 6.8;
+          let y = (idx < 2) ? 1.6 : 4.3;
+          s5.addShape(pptx.ShapeType.rect, { x: x, y: y, w: 5.6, h: 2.4, fill: { color: CARD_BG }, line: { color: '334155' } });
+          s5.addText(t.name, { x: x + 0.3, y: y + 0.2, w: 5.0, h: 0.3, fontSize: 14, color: t.color, bold: true });
+          s5.addText(t.sql, { x: x + 0.3, y: y + 0.6, w: 5.0, h: 1.6, fontSize: 11, fontFace: 'Courier New', color: WHITE });
+        });
+        s5.addNotes(speakerNotes[4]);
+
+        // SLIDE 6: Formulations
+        let s6 = pptx.addSlide();
+        addSlideHeader(s6, '05 / Computational Output', 'Analytical Mathematical Formulations');
+
+        s6.addShape(pptx.ShapeType.rect, { x: 0.8, y: 1.6, w: 11.6, h: 1.5, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s6.addText('1. Transaction Spend Velocity', { x: 1.0, y: 1.7, w: 11.0, h: 0.3, fontSize: 14, color: TEAL, bold: true });
+        s6.addText('Daily_Spend = Total_Expenses / Window_Days (W = 7, 14, 30, 60)\nWeekly_Spend = Daily_Spend × 7', { x: 1.0, y: 2.1, w: 11.0, h: 0.8, fontSize: 13, fontFace: 'Courier New', color: SKY });
+
+        s6.addShape(pptx.ShapeType.rect, { x: 0.8, y: 3.3, w: 11.6, h: 1.5, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s6.addText('2. Category Monthly Run-Rate Projection', { x: 1.0, y: 3.4, w: 11.0, h: 0.3, fontSize: 14, color: AMBER, bold: true });
+        s6.addText('Projected_Monthly_Spend = (Current_Spend / Days_Elapsed) × Total_Days_In_Month', { x: 1.0, y: 3.8, w: 11.0, h: 0.8, fontSize: 13, fontFace: 'Courier New', color: WHITE });
+
+        s6.addShape(pptx.ShapeType.rect, { x: 0.8, y: 5.0, w: 11.6, h: 1.7, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s6.addText('3. Month-over-Month (MoM) Trend Variance', { x: 1.0, y: 5.1, w: 11.0, h: 0.3, fontSize: 14, color: 'C084FC', bold: true });
+        s6.addText('MoM_Change_% = ((Projected_Spend - Previous_Month_Spend) / Previous_Month_Spend) × 100', { x: 1.0, y: 5.5, w: 11.0, h: 0.8, fontSize: 13, fontFace: 'Courier New', color: EMERALD });
+        s6.addNotes(speakerNotes[5]);
+
+        // SLIDE 7: Forecasting & Health
+        let s7 = pptx.addSlide();
+        addSlideHeader(s7, '06 / Intelligence Pipelines', 'Balance Forecasting & Health Scoring');
+
+        s7.addShape(pptx.ShapeType.rect, { x: 0.8, y: 1.6, w: 5.6, h: 4.0, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s7.addText('Linear Balance Forecasting', { x: 1.0, y: 1.8, w: 5.2, h: 0.4, fontSize: 16, color: SKY, bold: true });
+        s7.addText('• Month-End Estimate:\n  Bal = Current_Bal + (Daily_Net × Days_Remaining)\n\n• Forward 3-Month Projection:\n  Bal(M+1) = Month_End_Bal + (Est_Income - Est_Expense)\n\n• Enables proactive shortfall alerts and cash visibility', { x: 1.0, y: 2.3, w: 5.2, h: 3.0, fontSize: 12, color: MUTED });
+
+        s7.addShape(pptx.ShapeType.rect, { x: 6.8, y: 1.6, w: 5.6, h: 4.0, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s7.addText('Composite Health Score (0 - 100)', { x: 7.0, y: 1.8, w: 5.2, h: 0.4, fontSize: 16, color: TEAL, bold: true });
+        s7.addText('• 40% Weight: Category budget compliance ratio\n• 30% Weight: Global macro budget ceiling guard\n• 30% Weight: Savings rate target (>= 20% benchmark)\n\nTiers: >=85 EXCELLENT | 70-84 HEALTHY | 50-69 MODERATE | <50 CRITICAL', { x: 7.0, y: 2.3, w: 5.2, h: 3.0, fontSize: 12, color: MUTED });
+
+        s7.addShape(pptx.ShapeType.rect, { x: 0.8, y: 5.9, w: 11.6, h: 0.9, fill: { color: '132A3E' }, line: { color: EMERALD } });
+        s7.addText('Deterministic Financial AI: Pure mathematical models guarantee 0% hallucination and immediate sub-millisecond execution on local hardware.', { x: 1.0, y: 6.1, w: 11.2, h: 0.6, fontSize: 12, color: WHITE, bold: true });
+        s7.addNotes(speakerNotes[6]);
+
+        // SLIDE 8: 7 Workspaces
+        let s8 = pptx.addSlide();
+        addSlideHeader(s8, '07 / Presentation & UX', '7 Unified Functional Workspaces');
+
+        const tabs = [
+          { name: '1. Dashboard', desc: 'KPI cards, Category PieChart, Run-Rate BarChart, Recent 5 tx' },
+          { name: '2. Add Transaction', desc: 'Positive bound guard, category dropdown, payment channel picker' },
+          { name: '3. Ledger Table', desc: 'Real-time keyword search, filter by type/category, note edit/delete' },
+          { name: '4. Budgets', desc: 'Category monthly limits with Green / Amber / Red compliance meters' },
+          { name: '5. Goals', desc: 'Target amounts, deadlines, and visual savings allocation meters' },
+          { name: '6. Reports', desc: 'Velocity meters, 3-month forward projection, CSV export button' },
+          { name: '7. Profile', desc: 'Demographics, currency picker, global spending cap, CSV restore' }
+        ];
+
+        tabs.forEach((tb, idx) => {
+          let x = 0.8 + (idx % 2) * 5.9;
+          let y = 1.6 + Math.floor(idx / 2) * 1.25;
+          s8.addShape(pptx.ShapeType.rect, { x: x, y: y, w: 5.7, h: 1.1, fill: { color: CARD_BG }, line: { color: '334155' } });
+          s8.addText(tb.name, { x: x + 0.2, y: y + 0.15, w: 5.3, h: 0.3, fontSize: 13, color: TEAL, bold: true });
+          s8.addText(tb.desc, { x: x + 0.2, y: y + 0.45, w: 5.3, h: 0.5, fontSize: 11, color: MUTED });
+        });
+        s8.addNotes(speakerNotes[7]);
+
+        // SLIDE 9: Testing
+        let s9 = pptx.addSlide();
+        addSlideHeader(s9, '08 / Verification & QA', 'Rigorous Multi-Tier Testing Strategy');
+
+        s9.addShape(pptx.ShapeType.rect, { x: 0.8, y: 1.6, w: 3.6, h: 4.3, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s9.addText('Model Invariant Tests', { x: 1.0, y: 1.8, w: 3.2, h: 0.4, fontSize: 15, color: EMERALD, bold: true });
+        s9.addText('• Rejection of 0.00 & negative sums\n• Regex RFC 5322 email syntax\n• Non-null domain attributes\n• Defensive note sanitization\n• Category enum integrity', { x: 1.0, y: 2.3, w: 3.2, h: 3.2, fontSize: 12, color: MUTED });
+
+        s9.addShape(pptx.ShapeType.rect, { x: 4.8, y: 1.6, w: 3.6, h: 4.3, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s9.addText('Isolated Mockito Tests', { x: 5.0, y: 1.8, w: 3.2, h: 0.4, fontSize: 15, color: SKY, bold: true });
+        s9.addText('• Mocked StorageEngine\n• Threshold boundaries:\n   <75% OK\n   75-100% WARNING\n   >100% EXCEEDED\n• Zero database overhead', { x: 5.0, y: 2.3, w: 3.2, h: 3.2, fontSize: 12, color: MUTED });
+
+        s9.addShape(pptx.ShapeType.rect, { x: 8.8, y: 1.6, w: 3.6, h: 4.3, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s9.addText('In-Memory SQLite Tests', { x: 9.0, y: 1.8, w: 3.2, h: 0.4, fontSize: 15, color: 'C084FC', bold: true });
+        s9.addText('• jdbc:sqlite::memory:\n• Foreign key cascade tests\n• OpenCSV roundtrip test\n• Full forecast math verification\n• Zero disk contamination', { x: 9.0, y: 2.3, w: 3.2, h: 3.2, fontSize: 12, color: MUTED });
+
+        s9.addShape(pptx.ShapeType.rect, { x: 0.8, y: 6.1, w: 11.6, h: 0.7, fill: { color: '0A2540' }, line: { color: TEAL } });
+        s9.addText('Build Verification: mvn clean test passes 100% with full assertion coverage across all tiers.', { x: 1.0, y: 6.25, w: 11.2, h: 0.4, fontSize: 12, color: WHITE, bold: true });
+        s9.addNotes(speakerNotes[8]);
+
+        // SLIDE 10: INR Dataset
+        let s10 = pptx.addSlide();
+        addSlideHeader(s10, '09 / Demonstration Data', 'Built-in Indian Rupee (INR - ₹) Dataset');
+
+        s10.addShape(pptx.ShapeType.rect, { x: 0.8, y: 1.6, w: 11.6, h: 1.2, fill: { color: CARD_BG }, line: { color: '334155' } });
+        s10.addText('User Profile: Amnubd (amnubd@fintrack.in)  |  Base Currency: INR (₹)', { x: 1.0, y: 1.8, w: 11.0, h: 0.4, fontSize: 15, color: WHITE, bold: true });
+        s10.addText('Regular Monthly Income: ₹85,000  |  Global Spending Ceiling: ₹55,000  |  Monthly Savings Target: ₹25,000', { x: 1.0, y: 2.2, w: 11.0, h: 0.4, fontSize: 13, color: TEAL });
+
+        const demoCards = [
+          { title: 'Salary & Freelance', val: '₹85,000 + ₹15,000', color: EMERALD },
+          { title: 'Monthly Apartment Rent', val: '₹22,500 / month', color: ROSE },
+          { title: 'Groceries (Zepto/Baskets)', val: '₹13,500 / month', color: AMBER },
+          { title: 'Emergency Fund Goal', val: '₹1,85,000 / ₹3,00,000', color: SKY }
+        ];
+
+        demoCards.forEach((c, idx) => {
+          let x = 0.8 + idx * 3.0;
+          s10.addShape(pptx.ShapeType.rect, { x: x, y: 3.1, w: 2.6, h: 2.2, fill: { color: CARD_BG }, line: { color: '334155' } });
+          s10.addText(c.title, { x: x + 0.15, y: 3.3, w: 2.3, h: 0.5, fontSize: 12, color: MUTED });
+          s10.addText(c.val, { x: x + 0.15, y: 4.1, w: 2.3, h: 0.8, fontSize: 14, color: c.color, bold: true });
+        });
+
+        s10.addShape(pptx.ShapeType.rect, { x: 0.8, y: 5.6, w: 11.6, h: 1.1, fill: { color: '132A3E' }, line: { color: SKY } });
+        s10.addText('Automated Seeding: FinTrack checks database state on launch. If empty, it seeds 3 full historical months of authentic INR inflows, utility bills, discretionary expenses, and milestone goals.', { x: 1.0, y: 5.8, w: 11.2, h: 0.7, fontSize: 12, color: WHITE });
+        s10.addNotes(speakerNotes[9]);
+
+        // SLIDE 11: Future Roadmap
+        let s11 = pptx.addSlide();
+        addSlideHeader(s11, '10 / Horizon & Roadmap', 'Future Scope & Architectural Enhancements');
+
+        const roadmap = [
+          { icon: '🤖', title: 'On-Device Local AI', desc: 'Deploy lightweight quantized local LLMs/embeddings to parse SMS transaction alerts and bank alerts without cloud transmission.' },
+          { icon: '📄', title: 'Bank Statement Ingestion', desc: 'Direct parsing pipeline for PDF bank statements, OFX, and QIF standards to eliminate manual transaction entry.' },
+          { icon: '💱', title: 'Automated Forex Sync', desc: 'Automated multi-currency conversions using scheduled forex rates to dynamically convert foreign line-items into baseline INR.' },
+          { icon: '📱', title: 'Mobile Companion', desc: 'Cross-compilation using Gluon GraalVM Native Image to bring the JavaFX engine natively to Android and iOS devices.' }
+        ];
+
+        roadmap.forEach((r, idx) => {
+          let x = (idx % 2 === 0) ? 0.8 : 6.8;
+          let y = (idx < 2) ? 1.6 : 4.3;
+          s11.addShape(pptx.ShapeType.rect, { x: x, y: y, w: 5.6, h: 2.3, fill: { color: CARD_BG }, line: { color: '334155' } });
+          s11.addText(`${r.icon} ${r.title}`, { x: x + 0.3, y: y + 0.3, w: 5.0, h: 0.4, fontSize: 15, color: TEAL, bold: true });
+          s11.addText(r.desc, { x: x + 0.3, y: y + 0.8, w: 5.0, h: 1.2, fontSize: 12, color: MUTED });
+        });
+        s11.addNotes(speakerNotes[10]);
+
+        // SLIDE 12: Conclusion
+        let s12 = pptx.addSlide();
+        s12.background = { color: BG_COLOR };
+        s12.addText('CONCLUSION & DELIVERABLES', { x: 1.0, y: 1.0, w: 11.3, h: 0.4, fontSize: 13, color: TEAL, bold: true, align: 'center' });
+        s12.addText('Summary of Project Achievements', { x: 1.0, y: 1.5, w: 11.3, h: 0.8, fontSize: 28, color: WHITE, bold: true, align: 'center' });
+
+        const achievements = [
+          { title: 'Full MVC Pattern', desc: 'Strict separation of concerns; views never access database.' },
+          { title: 'Dual Persistence', desc: 'Relational SQLite ACID engine + CSV backup/export.' },
+          { title: 'Predictive Math', desc: 'Velocity, category run-rates, and 3-month forecast.' },
+          { title: '100% Tested', desc: 'Rigorous tests across model, mockito, and SQLite.' }
+        ];
+
+        achievements.forEach((a, idx) => {
+          let x = 0.8 + idx * 3.0;
+          s12.addShape(pptx.ShapeType.rect, { x: x, y: 2.6, w: 2.6, h: 2.2, fill: { color: CARD_BG }, line: { color: '334155' } });
+          s12.addText(a.title, { x: x + 0.15, y: 2.9, w: 2.3, h: 0.5, fontSize: 14, color: TEAL, bold: true });
+          s12.addText(a.desc, { x: x + 0.15, y: 3.5, w: 2.3, h: 1.0, fontSize: 12, color: MUTED });
+        });
+
+        s12.addShape(pptx.ShapeType.rect, { x: 3.5, y: 5.2, w: 6.3, h: 0.8, fill: { color: '0A2540' }, line: { color: TEAL } });
+        s12.addText('Ready for Technical Evaluation & Viva Defense', { x: 3.5, y: 5.35, w: 6.3, h: 0.5, fontSize: 14, color: WHITE, bold: true, align: 'center' });
+
+        s12.addText('Thank You  •  Questions & Discussion', { x: 1.0, y: 6.3, w: 11.3, h: 0.5, fontSize: 14, color: MUTED, align: 'center' });
+        s12.addNotes(speakerNotes[11]);
+
+        // Save Presentation
+        pptx.writeFile({ fileName: 'FinTrack_Project_Presentation.pptx' })
+          .then(fileName => {
+            btn.innerHTML = '<span>✅</span><span>Downloaded!</span>';
+            setTimeout(() => {
+              btn.innerHTML = originalText;
+              btn.disabled = false;
+            }, 3000);
+          })
+          .catch(err => {
+            console.error(err);
+            alert('Failed to generate PPTX: ' + err);
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+          });
+
+      } catch (err) {
+        console.error(err);
+        alert('Export error: ' + err);
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

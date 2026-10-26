@@ -1,0 +1,4 @@
+id,user_id,name,target_amount,current_amount,target_date
+"d195e9bd-dd58-4107-a85b-6a6d2d045f52","user_inr_1","Himachal Backpacking Trek",45000,32500,"2027-01-26"
+"b27ba4a2-e806-4647-aafb-48f666b7ad7d","user_inr_1","MacBook Pro M-Series",140000,95000,"2027-02-26"
+"6ccb6947-b02f-4026-a25c-6607f1ce4b60","user_inr_1","Emergency Reserve (6 Months)",300000,185000,"2027-08-26"
