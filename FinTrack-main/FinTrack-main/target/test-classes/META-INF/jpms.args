@@ -1,0 +1,4 @@
+--patch-module
+com.fintrack=_
+--add-reads
+com.fintrack=ALL-UNNAMED

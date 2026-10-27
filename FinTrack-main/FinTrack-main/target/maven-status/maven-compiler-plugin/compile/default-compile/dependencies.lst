@@ -1,0 +1,17 @@
+classpath:C:\Users\user\.m2\repository\org\openjfx\javafx-controls\17.0.10\javafx-controls-17.0.10.jar	306:1793031259546
+classpath:C:\Users\user\.m2\repository\org\openjfx\javafx-graphics\17.0.10\javafx-graphics-17.0.10.jar	306:1793031261781
+classpath:C:\Users\user\.m2\repository\org\openjfx\javafx-base\17.0.10\javafx-base-17.0.10.jar	302:1793031261757
+classpath:C:\Users\user\.m2\repository\org\openjfx\javafx-fxml\17.0.10\javafx-fxml-17.0.10.jar	302:1793031261852
+classpath:C:\Users\user\.m2\repository\org\apache\commons\commons-lang3\3.13.0\commons-lang3-3.13.0.jar	632267:1793031263144
+classpath:C:\Users\user\.m2\repository\org\apache\commons\commons-text\1.11.0\commons-text-1.11.0.jar	246659:1793031265298
+classpath:C:\Users\user\.m2\repository\commons-beanutils\commons-beanutils\1.9.4\commons-beanutils-1.9.4.jar	246918:1793031263901
+classpath:C:\Users\user\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar	61829:1793031263941
+classpath:C:\Users\user\.m2\repository\commons-collections\commons-collections\3.2.2\commons-collections-3.2.2.jar	588337:1793031263995
+classpath:C:\Users\user\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar	751914:1793031264045
+modulepath:C:\Users\user\.m2\repository\org\openjfx\javafx-controls\17.0.10\javafx-controls-17.0.10-win.jar	2551585:1793031265769
+modulepath:C:\Users\user\.m2\repository\org\openjfx\javafx-graphics\17.0.10\javafx-graphics-17.0.10-win.jar	5888983:1793031269303
+modulepath:C:\Users\user\.m2\repository\org\openjfx\javafx-base\17.0.10\javafx-base-17.0.10-win.jar	746012:1793031263085
+modulepath:C:\Users\user\.m2\repository\org\openjfx\javafx-fxml\17.0.10\javafx-fxml-17.0.10-win.jar	130063:1793031262636
+modulepath:C:\Users\user\.m2\repository\org\xerial\sqlite-jdbc\3.45.1.0\sqlite-jdbc-3.45.1.0.jar	13501708:1793031284536
+modulepath:C:\Users\user\.m2\repository\org\slf4j\slf4j-api\1.7.36\slf4j-api-1.7.36.jar	41125:1793031262665
+modulepath:C:\Users\user\.m2\repository\com\opencsv\opencsv\5.9\opencsv-5.9.jar	240388:1793031263848

@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="750.0" prefWidth="1150.0" stylesheets="@../css/styles.css"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.fintrack.controller.MainController">
+
+    <!-- ========================================================================= -->
+    <!-- LEFT SIDEBAR                                                              -->
+    <!-- ========================================================================= -->
+    <left>
+        <VBox styleClass="sidebar" spacing="6">
+            <Label text="FinTrack" styleClass="brand-title" />
+            <Label text="Financial Management Infrastructure" styleClass="brand-subtitle" wrapText="true" />
+            
+            <Separator opacity="0.15" />
+
+            <!-- Navigation Buttons -->
+            <Button fx:id="btnNavDashboard" text="  📊  Dashboard" styleClass="sidebar-button,active" onAction="#showDashboardTab" />
+            <Button fx:id="btnNavAddTx" text="  ➕  Add Transaction" styleClass="sidebar-button" onAction="#showAddTransactionTab" />
+            <Button fx:id="btnNavTransactions" text="  💳  Transactions" styleClass="sidebar-button" onAction="#showTransactionsTab" />
+            <Button fx:id="btnNavBudgets" text="  🎯  Budgets" styleClass="sidebar-button" onAction="#showBudgetsTab" />
+            <Button fx:id="btnNavGoals" text="  🏆  Milestone Goals" styleClass="sidebar-button" onAction="#showGoalsTab" />
+            <Button fx:id="btnNavReports" text="  📈  Reports &amp; Forecast" styleClass="sidebar-button" onAction="#showReportsTab" />
+            <Button fx:id="btnNavProfile" text="  👤  User Profile" styleClass="sidebar-button" onAction="#showProfileTab" />
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <!-- Active User Card in Sidebar -->
+            <VBox styleClass="sidebar-user-card">
+                <Label text="ACTIVE PROFILE" style="-fx-text-fill: #38bdf8; -fx-font-size: 10px; -fx-font-weight: bold;" />
+                <Label fx:id="lblSidebarUserName" text="Primary User" styleClass="sidebar-user-name" />
+                <Label fx:id="lblSidebarUserEmail" text="user@fintrack.org" styleClass="sidebar-user-email" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- ========================================================================= -->
+    <!-- MAIN CONTENT TAB PANE                                                     -->
+    <!-- ========================================================================= -->
+    <center>
+        <TabPane fx:id="mainTabPane" styleClass="hidden-tabs" tabClosingPolicy="UNAVAILABLE">
+
+            <!-- 1. DASHBOARD TAB -->
+            <Tab text="Dashboard">
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                    <VBox spacing="14" styleClass="content-area">
+                        <VBox spacing="4">
+                            <Label text="Financial Dashboard" styleClass="view-header" />
+                            <Label text="Real-time cash flow overview, current month metrics, and category burn rates." styleClass="view-subheader" />
+                        </VBox>
+
+                        <!-- KPI Summary Cards -->
+                        <HBox spacing="14">
+                            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="4">
+                                <Label text="MONTHLY INCOME" styleClass="kpi-title" />
+                                <Label fx:id="lblKpiIncome" text="0.00" styleClass="kpi-value,kpi-income" />
+                            </VBox>
+                            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="4">
+                                <Label text="MONTHLY EXPENSES" styleClass="kpi-title" />
+                                <Label fx:id="lblKpiExpenses" text="0.00" styleClass="kpi-value,kpi-expense" />
+                            </VBox>
+                            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="4">
+                                <Label text="NET CASH BALANCE" styleClass="kpi-title" />
+                                <Label fx:id="lblKpiBalance" text="0.00" styleClass="kpi-value,kpi-balance" />
+                            </VBox>
+                            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="4">
+                                <Label text="SAVINGS RATE" styleClass="kpi-title" />
+                                <Label fx:id="lblKpiSavingsRate" text="0.0%" styleClass="kpi-value,kpi-rate" />
+                            </VBox>
+                        </HBox>
+
+                        <!-- Charts Section -->
+                        <HBox spacing="14">
+                            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="8">
+                                <Label text="Spending by Category" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                                <PieChart fx:id="chartCategoryPie" prefHeight="170" minHeight="140" legendSide="RIGHT" />
+                            </VBox>
+                            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="8">
+                                <Label text="Category Burn-Rates (Actual vs Projected)" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                                <BarChart fx:id="chartMonthlyTrends" prefHeight="170" minHeight="140">
+                                    <xAxis><CategoryAxis label="Category" /></xAxis>
+                                    <yAxis><NumberAxis label="Amount" /></yAxis>
+                                </BarChart>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Recent Transactions Preview -->
+                        <VBox styleClass="card" spacing="8">
+                            <Label text="Recent Transactions" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                            <TableView fx:id="tableDashboardRecent" minHeight="160" prefHeight="175">
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                </columnResizePolicy>
+                                <columns>
+                                    <TableColumn fx:id="colDashDate" text="Date" minWidth="95" prefWidth="120" />
+                                    <TableColumn fx:id="colDashType" text="Type" minWidth="65" prefWidth="75" />
+                                    <TableColumn fx:id="colDashCategory" text="Category" minWidth="95" prefWidth="125" />
+                                    <TableColumn fx:id="colDashAmount" text="Amount" minWidth="110" prefWidth="140" />
+                                    <TableColumn fx:id="colDashNote" text="Note" minWidth="120" prefWidth="250" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- 2. ADD TRANSACTION TAB -->
+            <Tab text="Add Transaction">
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                    <VBox spacing="14" styleClass="content-area">
+                        <VBox spacing="4">
+                            <Label text="Record Financial Movement" styleClass="view-header" />
+                            <Label text="Ingest expense, income, or credit line items with instant validation." styleClass="view-subheader" />
+                        </VBox>
+
+                        <VBox styleClass="card" spacing="16" maxWidth="650">
+                            <Label fx:id="lblAddTxError" text="" styleClass="form-error-label" wrapText="true" />
+
+                            <GridPane hgap="16" vgap="14">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="30" />
+                                    <ColumnConstraints percentWidth="70" />
+                                </columnConstraints>
+
+                                <!-- Flow Direction -->
+                                <Label text="Transaction Type:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <ComboBox fx:id="comboAddTxType" maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                <!-- Category -->
+                                <Label text="Category:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                <ComboBox fx:id="comboAddTxCategory" maxWidth="Infinity" promptText="Select category" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                <!-- Amount & Currency -->
+                                <Label text="Monetary Amount:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                <HBox spacing="8" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                                    <TextField fx:id="txtAddTxAmount" promptText="e.g. 45.50" HBox.hgrow="ALWAYS" />
+                                    <ComboBox fx:id="comboAddTxCurrency" prefWidth="95" promptText="Currency" />
+                                </HBox>
+
+                                <!-- Payment Channel -->
+                                <Label text="Payment Channel:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                <ComboBox fx:id="comboAddTxPaymentMode" maxWidth="Infinity" promptText="Select payment mode" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                                <!-- Date -->
+                                <Label text="Transaction Date:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                <DatePicker fx:id="pickerAddTxDate" maxWidth="Infinity" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                                <!-- Note -->
+                                <Label text="Contextual Note / Memo:" styleClass="form-label" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                                <TextArea fx:id="txtAddTxNote" promptText="Optional description or itemized memo..." prefRowCount="3" wrapText="true" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+                            </GridPane>
+
+                            <HBox spacing="12" alignment="CENTER_RIGHT">
+                                <Button text="Clear Form" styleClass="btn-secondary" onAction="#handleClearAddTxForm" />
+                                <Button text="Save Transaction" styleClass="btn-primary" onAction="#handleSaveTransaction" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- 3. TRANSACTIONS TAB -->
+            <Tab text="Transactions">
+                <VBox spacing="12" styleClass="content-area">
+                    <VBox spacing="4">
+                        <Label text="Transaction Ledger" styleClass="view-header" />
+                        <Label text="Search, filter, inspect, and manage historical financial records." styleClass="view-subheader" />
+                    </VBox>
+
+                    <!-- Filter Toolbar -->
+                    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="card">
+                        <TextField fx:id="txtTxSearch" promptText="🔍 Search by keyword, note, or amount..." HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="comboTxTypeFilter" prefWidth="120" />
+                        <ComboBox fx:id="comboTxCategoryFilter" prefWidth="160" promptText="All Categories" />
+                        <Button text="Reset Filters" styleClass="btn-secondary" onAction="#handleResetTxFilters" />
+                    </HBox>
+
+                    <!-- Transactions TableView -->
+                    <TableView fx:id="tableTransactions" VBox.vgrow="ALWAYS" minHeight="220">
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
+                        <columns>
+                            <TableColumn fx:id="colTxDate" text="Date &amp; Time" minWidth="105" prefWidth="125" />
+                            <TableColumn fx:id="colTxType" text="Type" minWidth="65" prefWidth="75" />
+                            <TableColumn fx:id="colTxCategory" text="Category" minWidth="100" prefWidth="125" />
+                            <TableColumn fx:id="colTxAmount" text="Amount" minWidth="110" prefWidth="140" />
+                            <TableColumn fx:id="colTxPaymentMode" text="Payment Mode" minWidth="90" prefWidth="110" />
+                            <TableColumn fx:id="colTxNote" text="Note" minWidth="120" prefWidth="240" />
+                        </columns>
+                    </TableView>
+
+                    <!-- Action Bar -->
+                    <HBox spacing="12" alignment="CENTER_RIGHT">
+                        <Button text="Edit Note" styleClass="btn-secondary" onAction="#handleEditSelectedTransaction" />
+                        <Button text="Delete Record" styleClass="btn-danger" onAction="#handleDeleteSelectedTransaction" />
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- 4. BUDGETS TAB -->
+            <Tab text="Budgets">
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                    <VBox spacing="14" styleClass="content-area">
+                        <VBox spacing="4">
+                            <Label text="Category Budgets &amp; Threshold Compliance" styleClass="view-header" />
+                            <Label text="Configure monthly spending ceilings and monitor visual progress compliance bars." styleClass="view-subheader" />
+                        </VBox>
+
+                        <!-- Set Budget Limit Form -->
+                        <VBox styleClass="card" spacing="10">
+                            <Label text="Set or Update Monthly Budget Limit" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                            <Label fx:id="lblBudgetError" text="" styleClass="form-error-label" />
+
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                    <Label text="Category" styleClass="form-label" />
+                                    <ComboBox fx:id="comboBudgetCategory" maxWidth="Infinity" promptText="Select Category" />
+                                </VBox>
+                                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                    <Label text="Monthly Limit:" styleClass="form-label" />
+                                    <TextField fx:id="txtBudgetLimit" promptText="e.g. 500.00" />
+                                </VBox>
+                                <VBox spacing="4" prefWidth="100">
+                                    <Label text="Month" styleClass="form-label" />
+                                    <Spinner fx:id="spinnerBudgetMonth" maxWidth="Infinity" />
+                                </VBox>
+                                <VBox spacing="4" prefWidth="110">
+                                    <Label text="Year" styleClass="form-label" />
+                                    <Spinner fx:id="spinnerBudgetYear" maxWidth="Infinity" />
+                                </VBox>
+                                <VBox spacing="4" alignment="BOTTOM_LEFT">
+                                    <Button text="Set Limit" styleClass="btn-primary" onAction="#handleSaveBudgetLimit" />
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Budget Compliance Table with Visual Bars -->
+                        <VBox styleClass="card" spacing="10">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Monthly Budget Compliance Tracking" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button text="Delete Selected Budget" styleClass="btn-secondary" onAction="#handleDeleteSelectedBudget" />
+                            </HBox>
+
+                            <TableView fx:id="tableBudgets" minHeight="180" prefHeight="240">
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                </columnResizePolicy>
+                                <columns>
+                                    <TableColumn fx:id="colBudgetCategory" text="Category" minWidth="95" prefWidth="125" />
+                                    <TableColumn fx:id="colBudgetLimit" text="Allocated Limit" minWidth="85" prefWidth="110" />
+                                    <TableColumn fx:id="colBudgetSpent" text="Actual Spent" minWidth="85" prefWidth="110" />
+                                    <TableColumn fx:id="colBudgetRemaining" text="Remaining" minWidth="85" prefWidth="110" />
+                                    <TableColumn fx:id="colBudgetProgress" text="Compliance Meter" minWidth="110" prefWidth="150" />
+                                    <TableColumn fx:id="colBudgetStatus" text="Status" minWidth="65" prefWidth="80" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- 5. MILESTONE GOALS TAB -->
+            <Tab text="Milestone Goals">
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                    <VBox spacing="14" styleClass="content-area">
+                        <VBox spacing="4">
+                            <Label text="Financial Milestone Goals" styleClass="view-header" />
+                            <Label text="Track progress toward savings targets, emergency reserves, and major purchases." styleClass="view-subheader" />
+                        </VBox>
+
+                        <!-- Goal Provisioning & Contribution Row -->
+                        <HBox spacing="14">
+                            <!-- Create Goal Form -->
+                            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="10">
+                                <Label text="Create New Milestone Goal" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                                <Label fx:id="lblGoalError" text="" styleClass="form-error-label" />
+
+                                <GridPane hgap="10" vgap="8">
+                                    <Label text="Goal Name:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <TextField fx:id="txtGoalName" promptText="e.g. Emergency Fund" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                    <Label text="Target Amount:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <TextField fx:id="txtGoalTarget" promptText="e.g. 10000.00" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                    <Label text="Target Date:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <DatePicker fx:id="pickerGoalDate" maxWidth="Infinity" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                                </GridPane>
+                                <Button text="Provision Goal" styleClass="btn-primary" onAction="#handleCreateGoal" />
+                            </VBox>
+
+                            <!-- Add Contribution Form -->
+                            <VBox styleClass="card" prefWidth="350" spacing="10">
+                                <Label text="Contribute to Selected Goal" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                                <Label text="Select a goal below, enter contribution funds, and allocate savings." wrapText="true" style="-fx-text-fill: #64748b; -fx-font-size: 11px;" />
+                                <TextField fx:id="txtGoalContribution" promptText="Contribution amount" />
+                                <HBox spacing="10">
+                                    <Button text="Allocate Funds" styleClass="btn-success" onAction="#handleContributeToGoal" />
+                                    <Button text="Delete Goal" styleClass="btn-danger" onAction="#handleDeleteGoal" />
+                                </HBox>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Goals Table -->
+                        <VBox styleClass="card" spacing="10">
+                            <Label text="Active Milestone Targets" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                            <TableView fx:id="tableGoals" minHeight="140" prefHeight="170">
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                </columnResizePolicy>
+                                <columns>
+                                    <TableColumn fx:id="colGoalName" text="Goal Name" minWidth="120" prefWidth="160" />
+                                    <TableColumn fx:id="colGoalTarget" text="Target" minWidth="85" prefWidth="110" />
+                                    <TableColumn fx:id="colGoalCurrent" text="Current Saved" minWidth="90" prefWidth="115" />
+                                    <TableColumn fx:id="colGoalProgress" text="Completion %" minWidth="110" prefWidth="145" />
+                                    <TableColumn fx:id="colGoalDeadline" text="Deadline" minWidth="85" prefWidth="105" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- 6. REPORTS & FORECAST TAB -->
+            <Tab text="Reports">
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                    <VBox spacing="14" styleClass="content-area">
+                        <HBox alignment="CENTER_LEFT">
+                            <VBox spacing="4">
+                                <Label text="Analytics &amp; Forecasting Intelligence" styleClass="view-header" />
+                                <Label text="Transaction velocity, 3-month liquidity projections, and health diagnostics." styleClass="view-subheader" />
+                            </VBox>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button text="📥 Export Data to CSV" styleClass="btn-secondary" onAction="#handleExportToCsv" />
+                        </HBox>
+
+                        <!-- Velocity & Health Diagnostic Cards -->
+                        <HBox spacing="14">
+                            <!-- Velocity Metrics -->
+                            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="8">
+                                <HBox alignment="CENTER_LEFT">
+                                    <Label text="Transaction Velocity" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <ComboBox fx:id="comboVelocityDays" prefWidth="100" />
+                                </HBox>
+                                <GridPane hgap="12" vgap="6">
+                                    <Label text="Daily Outflow Rate:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <Label fx:id="lblReportDailySpend" text="0.00/day" style="-fx-font-weight: bold; -fx-text-fill: #0284c7;" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                    <Label text="Daily Tx Frequency:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <Label fx:id="lblReportDailyTx" text="0.00 tx/day" style="-fx-font-weight: bold;" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                    <Label text="Weekly Outflow Rate:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <Label fx:id="lblReportWeeklySpend" text="0.00/wk" style="-fx-font-weight: bold; -fx-text-fill: #0284c7;" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                    <Label text="Weekly Tx Frequency:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                    <Label fx:id="lblReportWeeklyTx" text="0.00 tx/wk" style="-fx-font-weight: bold;" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                                </GridPane>
+                            </VBox>
+
+                            <!-- Financial Health Scorecard -->
+                            <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="8">
+                                <Label text="Financial Health Summary" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                                <HBox spacing="14" alignment="CENTER_LEFT">
+                                    <Label fx:id="lblReportHealthScore" text="-- / 100" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                                    <Label fx:id="lblReportHealthTier" text="STATUS" style="-fx-font-size: 12px; -fx-font-weight: bold;" />
+                                </HBox>
+                                <ProgressBar fx:id="progReportHealth" maxWidth="Infinity" prefHeight="10" />
+                                <Label fx:id="lblReportHealthInsight" text="Evaluating financial trajectory..." wrapText="true" style="-fx-text-fill: #475569; -fx-font-size: 11px;" />
+                            </VBox>
+                        </HBox>
+
+                        <!-- Multi-Month Cash Balance Forecast -->
+                        <VBox styleClass="card" spacing="10">
+                            <VBox spacing="2">
+                                <Label text="Predictive Balance Forecast (Current Run-Rate Projection)" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                                <Label fx:id="lblReportMonthEndForecast" text="Projected Month-End Balance: 0.00" style="-fx-font-size: 12px; -fx-text-fill: #64748b;" />
+                            </VBox>
+                            <TableView fx:id="tableForecast" minHeight="120" prefHeight="135">
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                </columnResizePolicy>
+                                <columns>
+                                    <TableColumn fx:id="colForecastPeriod" text="Forward Period" minWidth="90" prefWidth="110" />
+                                    <TableColumn fx:id="colForecastIncome" text="Estimated Income" minWidth="95" prefWidth="125" />
+                                    <TableColumn fx:id="colForecastExpense" text="Projected Outflow" minWidth="95" prefWidth="125" />
+                                    <TableColumn fx:id="colForecastNet" text="Projected Net" minWidth="95" prefWidth="125" />
+                                    <TableColumn fx:id="colForecastBalance" text="Projected Balance" minWidth="110" prefWidth="140" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- 7. PROFILE TAB -->
+            <Tab text="Profile">
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                    <VBox spacing="14" styleClass="content-area">
+                        <VBox spacing="4">
+                            <Label text="User Profile &amp; Global Thresholds" styleClass="view-header" />
+                            <Label text="Manage demographic profile, macro spending ceilings, and database backups." styleClass="view-subheader" />
+                        </VBox>
+
+                        <VBox styleClass="card" spacing="16" maxWidth="650">
+                            <Label fx:id="lblProfileStatus" text="" styleClass="form-error-label" />
+
+                            <GridPane hgap="16" vgap="14">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="35" />
+                                    <ColumnConstraints percentWidth="65" />
+                                </columnConstraints>
+
+                                <Label text="Full Name:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <TextField fx:id="txtProfileName" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                <Label text="Email Address:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                <TextField fx:id="txtProfileEmail" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                <Label text="Base / Account Currency:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                <ComboBox fx:id="comboProfileCurrency" maxWidth="Infinity" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                <Label text="Reporting / Display Currency:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                <ComboBox fx:id="comboProfileReportingCurrency" maxWidth="Infinity" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                                <Label text="Monthly Regular Income:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                <TextField fx:id="txtProfileIncome" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                                <Label text="Global Budget Ceiling:" styleClass="form-label" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                                <TextField fx:id="txtProfileGlobalBudget" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+                                <Label text="Monthly Savings Goal:" styleClass="form-label" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                                <TextField fx:id="txtProfileSavingsGoal" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+                            </GridPane>
+
+                            <HBox spacing="12" alignment="CENTER_RIGHT">
+                                <Button text="Save Profile" styleClass="btn-primary" onAction="#handleSaveProfile" />
+                            </HBox>
+
+                            <Separator />
+
+                            <!-- Live Exchange Rate Quotations -->
+                            <VBox spacing="6">
+                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                    <Label text="Exchange Rate Quotations" style="-fx-font-weight: bold; -fx-text-fill: #334155;" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Button text="🔄 Refresh Rates" styleClass="btn-secondary" onAction="#handleRefreshExchangeRates" />
+                                </HBox>
+                                <Label fx:id="lblExchangeRateStatus" text="Rates status: Initializing..." wrapText="true" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+                            </VBox>
+
+                            <Separator />
+
+                            <Label text="Data Backup &amp; Disaster Recovery" style="-fx-font-weight: bold; -fx-text-fill: #334155;" />
+                            <HBox spacing="12">
+                                <Button text="Export All Tables to CSV" styleClass="btn-secondary" onAction="#handleExportToCsv" />
+                                <Button text="Import from CSV Directory" styleClass="btn-secondary" onAction="#handleImportFromCsv" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+        </TabPane>
+    </center>
+</BorderPane>

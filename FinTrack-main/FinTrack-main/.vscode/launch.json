@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launcher",
+      "request": "launch",
+      "mainClass": "com.fintrack/com.fintrack.Launcher",
+      "projectName": "fintrack-core"
+    },
+    {
+      "type": "java",
+      "name": "Run FinTrack (JavaFX)",
+      "request": "launch",
+      "mainClass": "com.fintrack.MainApp",
+      "projectName": "fintrack-core",
+      "vmArgs": "--module-path \"${env:USERPROFILE}/.m2/repository/org/openjfx/javafx-base/17.0.10/javafx-base-17.0.10-win.jar;${env:USERPROFILE}/.m2/repository/org/openjfx/javafx-graphics/17.0.10/javafx-graphics-17.0.10-win.jar;${env:USERPROFILE}/.m2/repository/org/openjfx/javafx-controls/17.0.10/javafx-controls-17.0.10-win.jar;${env:USERPROFILE}/.m2/repository/org/openjfx/javafx-fxml/17.0.10/javafx-fxml-17.0.10-win.jar\" --add-modules javafx.controls,javafx.fxml"
+    }
+  ]
+}

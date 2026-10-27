@@ -1,0 +1,3 @@
+# Created at 2026-10-27T00:50:07.369
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream '[0.780s][error][attach] could not open write-only (5) pipe \\.\pipe\javatool1713577787'.
+
